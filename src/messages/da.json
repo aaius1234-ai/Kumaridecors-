@@ -1,0 +1,37 @@
+{
+  "SandboxBanner": {
+    "label": "Sandkasse · læringsprojekt · ikke kumaridecors.com"
+  },
+  "Home": {
+    "tagline": "Håndlavet i Nepal · Bragt til København",
+    "title": "Kumari Decors",
+    "intro": "Live-data fra en Shopify-udviklingsbutik. Denne side er en Server Component, produkter hentes på serveren ved hver forespørgsel.",
+    "productsHeading": "Produkter",
+    "productsCount": "{count, plural, =0 {ingen produkter} =1 {1 live} other {# live}}",
+    "fetchFailedTitle": "Kunne ikke indlæse produkter fra Shopify.",
+    "fetchFailedHint": "Tjek at NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN og NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN er korrekte i .env.local, og at din udviklingsbutik kører.",
+    "emptyTitle": "Ingen produkter endnu.",
+    "emptyHint": "Tilføj et produkt i din Shopify-administration (status = Aktiv), og opdater derefter denne side. Det vises her automatisk.",
+    "soldOut": "Udsolgt",
+    "footer": "Weekend 2 af 6. Redaktionelle produktsider og dansk lokalisering.",
+    "footerSub": "Se ../DESIGN.md og ../SANDBOX_PLAN.md for kontekst."
+  },
+  "ProductDetail": {
+    "back": "Tilbage til alle produkter",
+    "soldOut": "Udsolgt",
+    "addToCart": "Læg i kurv",
+    "makerSection": "Håndværker",
+    "specsSection": "Specifikationer",
+    "materials": "Materialer",
+    "dimensions": "Mål",
+    "weight": "Vægt",
+    "lineageYears": "{years} års praksis",
+    "notFoundTitle": "Produkt ikke fundet.",
+    "notFoundHint": "Det produkt, du leder efter, findes ikke eller er ikke længere aktivt."
+  },
+  "LocaleSwitcher": {
+    "label": "Sprog",
+    "en": "English",
+    "da": "Dansk"
+  }
+}

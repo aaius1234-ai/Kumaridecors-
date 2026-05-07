@@ -1,0 +1,37 @@
+{
+  "SandboxBanner": {
+    "label": "Sandbox · learning project · not kumaridecors.com"
+  },
+  "Home": {
+    "tagline": "Hand-crafted in Nepal · Carried to Copenhagen",
+    "title": "Kumari Decors",
+    "intro": "Live data from a Shopify development store. This page is a Server Component, products are fetched at request time on the server.",
+    "productsHeading": "Products",
+    "productsCount": "{count, plural, =0 {no products} =1 {1 live} other {# live}}",
+    "fetchFailedTitle": "Could not load products from Shopify.",
+    "fetchFailedHint": "Check that NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN and NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN are correct in .env.local, and that your dev store is running.",
+    "emptyTitle": "No products yet.",
+    "emptyHint": "Add a product in your Shopify admin (status = Active), then refresh this page. It will appear here automatically.",
+    "soldOut": "Sold out",
+    "footer": "Weekend 2 of 6. Editorial product detail pages and Danish locale.",
+    "footerSub": "See ../DESIGN.md and ../SANDBOX_PLAN.md for context."
+  },
+  "ProductDetail": {
+    "back": "Back to all products",
+    "soldOut": "Sold out",
+    "addToCart": "Add to cart",
+    "makerSection": "Maker",
+    "specsSection": "Specifications",
+    "materials": "Materials",
+    "dimensions": "Dimensions",
+    "weight": "Weight",
+    "lineageYears": "{years} years of practice",
+    "notFoundTitle": "Product not found.",
+    "notFoundHint": "The product you are looking for does not exist or is no longer active."
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "da": "Dansk"
+  }
+}
