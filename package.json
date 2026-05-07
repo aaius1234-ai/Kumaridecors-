@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "bun run scripts/seed-products.ts",
+    "seed:dry": "bun run scripts/seed-products.ts -- --dry-run",
+    "seed:fresh": "bun run scripts/seed-products.ts -- --delete-samples"
   },
   "dependencies": {
     "graphql": "^16.14.0",
