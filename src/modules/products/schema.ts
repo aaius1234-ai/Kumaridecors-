@@ -66,3 +66,35 @@ export const allProductsResponseSchema = z.object({
   }),
 });
 export type AllProductsResponse = z.infer<typeof allProductsResponseSchema>;
+
+/**
+ * Full product detail — used on the product detail page.
+ * Extends ProductCard with richer fields needed for editorial layout:
+ *   - descriptionHtml: pre-rendered, Shopify-sanitized HTML for body copy
+ *   - images: full image gallery (carousel)
+ *   - vendor + productType: shown as small metadata pills (optional)
+ */
+export const productDetailSchema = productCardSchema.extend({
+  descriptionHtml: z.string(),
+  vendor: z.string(),
+  productType: z.string(),
+  images: z.object({
+    edges: z.array(
+      z.object({
+        node: imageSchema,
+      }),
+    ),
+  }),
+});
+export type ProductDetail = z.infer<typeof productDetailSchema>;
+
+/**
+ * Top-level shape of the ProductByHandle query response.
+ * Note: product is nullable — Shopify returns null when handle doesn't exist
+ * or product is inactive/deleted. The api.ts function maps null to a
+ * "not_found" AppError so callers handle it like any other failure.
+ */
+export const productByHandleResponseSchema = z.object({
+  product: productDetailSchema.nullable(),
+});
+export type ProductByHandleResponse = z.infer<typeof productByHandleResponseSchema>;

@@ -8,6 +8,7 @@
  *     what data Shopify returns. Generated code hides that.
  *
  * Reference: https://shopify.dev/docs/api/storefront/2025-04/queries/products
+ *           https://shopify.dev/docs/api/storefront/2025-04/queries/product
  */
 
 /**
@@ -48,6 +49,58 @@ export const ALL_PRODUCTS_QUERY = /* GraphQL */ `
               currencyCode
             }
           }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * Fetch a single product by its handle (URL slug).
+ *
+ * Used on the product detail page (/products/[handle]). Returns richer data
+ * than ALL_PRODUCTS_QUERY: full description (HTML), all images, vendor, type,
+ * variants for in-stock state, and selected metafields for the maker story
+ * (Weekend 2 commit 4 wires those through).
+ *
+ * Variables:
+ *   - handle: the URL-safe product slug (e.g. "vajrapani-sacred-bronze")
+ */
+export const PRODUCT_BY_HANDLE_QUERY = /* GraphQL */ `
+  query ProductByHandle($handle: String!) {
+    product(handle: $handle) {
+      id
+      handle
+      title
+      description
+      descriptionHtml
+      availableForSale
+      vendor
+      productType
+      featuredImage {
+        url
+        altText
+        width
+        height
+      }
+      images(first: 10) {
+        edges {
+          node {
+            url
+            altText
+            width
+            height
+          }
+        }
+      }
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+        maxVariantPrice {
+          amount
+          currencyCode
         }
       }
     }
