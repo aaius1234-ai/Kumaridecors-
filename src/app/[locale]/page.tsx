@@ -1,21 +1,15 @@
 /**
  * Homepage (Server Component, locale-aware).
  *
- * Reads translated strings via getTranslations() from src/messages/{en,da}.json
- * based on the active [locale] segment in the URL.
- *
- * Architecture notes:
- *   - SERVER component, no "use client" directive.
- *   - getAllProducts() and getTranslations() both run on the Node side.
- *   - Currency formatting uses the active locale (en: "DKK 8,000.00", da: "8.000,00 kr.").
- *   - force-dynamic so adding a product in Shopify admin shows up on refresh.
+ * Renders editorial product cards in a 3-column grid on large screens.
+ * Per-card translation, currency, and Link routing all derive from the active
+ * [locale] segment.
  */
 
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getAllProducts } from "@/modules/products/api";
-import { formatMoney } from "@/lib/money";
 import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
-import { Link } from "@/i18n/navigation";
+import { ProductCard } from "@/features/products/components/ProductCard";
 import type { Locale } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -35,33 +29,34 @@ export default async function Home({ params }: HomePageProps) {
 
   return (
     <div className="min-h-screen bg-stone-50 text-stone-900">
-      {/* Sandbox banner */}
-      <div className="border-b border-stone-200 bg-amber-50 px-6 py-2 text-center text-xs uppercase tracking-widest text-amber-900">
+      {/* Sandbox identity banner — present on every page so the project is
+          never confused with the production site. */}
+      <div className="border-b border-stone-200 bg-amber-50 px-6 py-2 text-center text-[0.6875rem] uppercase tracking-[0.25em] text-amber-900">
         {tBanner("label")}
       </div>
 
-      <main className="mx-auto flex max-w-5xl flex-col gap-12 px-6 py-24">
-        <header className="flex flex-col gap-4">
+      <main className="mx-auto flex max-w-6xl flex-col gap-16 px-6 py-20 sm:py-28">
+        <header className="flex flex-col gap-6">
           <div className="flex items-start justify-between gap-4">
-            <p className="text-xs uppercase tracking-[0.3em] text-stone-500">
+            <p className="text-[0.6875rem] uppercase tracking-[0.3em] text-stone-500">
               {tHome("tagline")}
             </p>
             <LocaleSwitcher />
           </div>
-          <h1 className="font-serif text-5xl leading-tight tracking-tight text-stone-900 sm:text-6xl">
+          <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-stone-900 sm:text-6xl lg:text-7xl">
             {tHome("title")}
           </h1>
-          <p className="mt-4 max-w-xl text-lg leading-relaxed text-stone-600">
+          <p className="max-w-xl text-base leading-relaxed text-stone-600 sm:text-lg">
             {tHome("intro")}
           </p>
         </header>
 
-        <section className="flex flex-col gap-6 border-t border-stone-200 pt-10">
+        <section className="flex flex-col gap-10 border-t border-stone-200 pt-12">
           <div className="flex items-baseline justify-between">
-            <h2 className="font-serif text-2xl tracking-tight">
+            <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
               {tHome("productsHeading")}
             </h2>
-            <p className="text-xs uppercase tracking-[0.2em] text-stone-500">
+            <p className="text-[0.6875rem] uppercase tracking-[0.25em] text-stone-500">
               {result.ok
                 ? tHome("productsCount", { count: result.value.length })
                 : "fetch failed"}
@@ -79,7 +74,7 @@ export default async function Home({ params }: HomePageProps) {
           )}
 
           {result.ok && result.value.length === 0 && (
-            <div className="rounded border border-stone-200 bg-white p-10 text-center">
+            <div className="rounded border border-stone-200 bg-white p-12 text-center">
               <p className="font-serif text-xl text-stone-700">
                 {tHome("emptyTitle")}
               </p>
@@ -88,46 +83,14 @@ export default async function Home({ params }: HomePageProps) {
           )}
 
           {result.ok && result.value.length > 0 && (
-            <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {result.value.map((product) => (
-                <li
-                  key={product.id}
-                  className="flex flex-col gap-3 rounded border border-stone-200 bg-white p-5"
-                >
-                  {product.featuredImage && (
-                    <Link
-                      href={`/products/${product.handle}`}
-                      className="block"
-                    >
-                      <div className="aspect-square w-full overflow-hidden bg-stone-100">
-                        {/* Plain <img> for v1; Weekend 2 next commit swaps to next/image. */}
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={product.featuredImage.url}
-                          alt={product.featuredImage.altText ?? product.title}
-                          className="h-full w-full object-cover transition-transform duration-300 hover:scale-[1.02]"
-                        />
-                      </div>
-                    </Link>
-                  )}
-                  <div className="flex flex-col gap-1">
-                    <h3 className="font-serif text-lg leading-tight tracking-tight">
-                      <Link
-                        href={`/products/${product.handle}`}
-                        className="hover:underline"
-                      >
-                        {product.title}
-                      </Link>
-                    </h3>
-                    <p className="text-sm text-stone-600">
-                      {formatMoney(product.priceRange.minVariantPrice, locale)}
-                    </p>
-                    {!product.availableForSale && (
-                      <p className="text-xs uppercase tracking-wider text-stone-400">
-                        {tHome("soldOut")}
-                      </p>
-                    )}
-                  </div>
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+              {result.value.map((product, index) => (
+                <li key={product.id}>
+                  <ProductCard
+                    product={product}
+                    locale={locale}
+                    priority={index < 3}
+                  />
                 </li>
               ))}
             </ul>
